@@ -13,7 +13,7 @@ router.post('/mail/check', function(req, res, next) {
     })
   }
   catch (e) {
-    return res.json({status: false, value: "Lỗi hệ thống! Vui lòng thử lại!"})
+    return res.json({status: false, value: "Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!"})
   }
 });
 router.post('/mail/register/check', function(req, res, next) {
@@ -32,7 +32,7 @@ router.post('/mail/register/check', function(req, res, next) {
           })
         }
         catch (e) {
-          return res.json({status: false, value: "Lỗi hệ thống! Vui lòng thử lại!"})
+          return res.json({status: false, value: "Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!"})
         }
       } else {
         if (i === accounts.length - 1) {
@@ -43,7 +43,7 @@ router.post('/mail/register/check', function(req, res, next) {
   }
   catch (e) {
     console.log(e)
-    return res.json({status: false, value: "Lỗi hệ thống! Vui lòng thử lại!"})
+    return res.json({status: false, value: "Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!"})
   }
 });
 
@@ -64,7 +64,7 @@ function fetchEmails(username, password, callback) {
 
   // Sự kiện khi có lỗi
   imap.once('error', function(err) {
-    return callback({status: false, value: "Lỗi hệ thống! Vui lòng thử lại!"})
+    return callback({status: false, value: "Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!"})
   });
 
   // Sự kiện khi đóng kết nối
@@ -79,11 +79,11 @@ function fetchEmails(username, password, callback) {
   imap.once('ready', function() {
     openInbox(function(err, box) {
       if (err) {
-        return callback({status: false, value: "Lỗi hệ thống! Vui lòng thử lại!"})
+        return callback({status: false, value: "Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!"})
       };
       imap.search(['UNSEEN'], function(err, results) {
         if (err) {
-          return callback({status: false, value: "Lỗi hệ thống! Vui lòng thử lại!"})
+          return callback({status: false, value: "Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!"})
         };
         if (results.length > 0) {
           const lastEmail = results[results.length - 1]; // Lấy email cuối cùng từ danh sách kết quả
@@ -119,7 +119,7 @@ function fetchEmails(username, password, callback) {
             });
           });
           f.once('error', function(err) {
-            return callback({status: false, value: "Lỗi hệ thống! Vui lòng thử lại!"})
+            return callback({status: false, value: "Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!"})
           });
           f.once('end', function() {
             console.log('Done fetching the message!');
