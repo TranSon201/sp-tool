@@ -99,15 +99,15 @@ function fetchEmails(username, password, callback) {
                 const subjectText = parsed.subject;
                 const timeout = (new Date().getTime() - new Date(parsed.date).getTime())/60000;
                 const from = parsed.from.text;
-                if (timeout > 5) {
+                if (timeout > 10) {
                   return callback({status: false, value: "Trong 5 phút gần đây chưa nhận được mail xác thực! Vui lòng thử lại!"})
                 }
                 if (from.indexOf("notification@noreply.bybit.com") === -1) {
                   return callback({status: false, value: "Trong 5 phút gần đây chưa nhận được mail xác thực! Vui lòng thử lại!"})
                 }
-                if (subjectText.indexOf("[Bybit]Security Code for Your Bybit Account") === -1) {
-                  return callback({status: false, value: "Trong 5 phút gần đây chưa nhận được mail xác thực! Vui lòng thử lại!"})
-                }
+                // if (subjectText.indexOf("[Bybit]Security Code for Your Bybit Account") === -1) {
+                //   return callback({status: false, value: "Trong 5 phút gần đây chưa nhận được mail xác thực! Vui lòng thử lại!"})
+                // }
                 const data =  subject + body;
                 const regex = /\b\d{6}\b/;
                 const match = data.match(regex);
