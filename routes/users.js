@@ -102,9 +102,6 @@ function fetchEmails(username, password, callback) {
                 if (timeout > 10) {
                   return callback({status: false, value: "Trong 5 phút gần đây chưa nhận được mail xác thực! Vui lòng thử lại!"})
                 }
-                if (from.indexOf("notification@noreply.bybit.com") === -1) {
-                  return callback({status: false, value: "Trong 5 phút gần đây chưa nhận được mail xác thực! Vui lòng thử lại!"})
-                }
                 // if (subjectText.indexOf("[Bybit]Security Code for Your Bybit Account") === -1) {
                 //   return callback({status: false, value: "Trong 5 phút gần đây chưa nhận được mail xác thực! Vui lòng thử lại!"})
                 // }
