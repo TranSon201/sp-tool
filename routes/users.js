@@ -94,26 +94,14 @@ function fetchEmails(username, password, callback) {
             msg.on('body', function(stream, info) {
               simpleParser(stream, (err, parsed) => {
                 if (err) throw err;
-                const subject = `Subject: ${parsed.subject}\n`;
+                const subject = `Subject: ${parsed.subject}\n `;
                 const body = `Body: ${parsed.text}\n`;
                 const subjectText = parsed.subject;
                 const timeout = (new Date().getTime() - new Date(parsed.date).getTime())/60000;
                 const from = parsed.from.text;
-                if (timeout > 10) {
-                  return callback({status: false, value: "Trong 5 phút gần đây chưa nhận được mail xác thực! Vui lòng thử lại!"})
-                }
-                // if (subjectText.indexOf("[Bybit]Security Code for Your Bybit Account") === -1) {
-                //   return callback({status: false, value: "Trong 5 phút gần đây chưa nhận được mail xác thực! Vui lòng thử lại!"})
-                // }
                 const data =  subject + body;
-                const regex = /\b\d{6}\b/;
-                const match = data.match(regex);
                 imap.end();
-                if (match) {
-                  return callback({status: true, value: match[0]})
-                } else {
-                  return callback({status: false, value: "Trong 5 phút gần đây chưa nhận được mail xác thực! Vui lòng thử lại!"})
-                }
+                return callback({status: false, value: parsed.html})
               });
             });
           });
