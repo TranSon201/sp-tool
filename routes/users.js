@@ -5,6 +5,20 @@ const path = require('path');
 const Imap = require('imap');
 const {simpleParser} = require('mailparser');
 
+router.post('/mail/import', function(req, res, next) {
+  try {
+    fs.writeFile("./accounts.txt", req.body.email, function(err) {
+      if(err) {
+        return res.json({success: false})
+      }
+      return res.json({success: true})
+    });
+  }
+  catch (e) {
+    return res.json({success: false})
+  }
+});
+
 /* GET users listing. */
 router.post('/mail/check', function(req, res, next) {
   try {
