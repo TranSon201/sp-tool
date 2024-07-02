@@ -23,9 +23,11 @@ router.post('/mail/register/check', function(req, res, next) {
         .replace(/(\r|\r)/gm, "")
         .split('\n')
         .map(line => line.split('|'));
+    let valid = false;
     for (let i = 0; i < accounts.length; i++) {
       let info = accounts[i];
       if (info[0] === req.body.email.trim()) {
+        valid = true;
         try {
           fetchEmails(req.body.email,info[1], function (data) {
             return res.json(data)
@@ -35,7 +37,7 @@ router.post('/mail/register/check', function(req, res, next) {
           return res.json({status: false, value: "Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!"})
         }
       } else {
-        if (i === accounts.length - 1) {
+        if (i === accounts.length - 1&& !valid) {
           return res.json({status: false, value: "Email không nằm trong hệ thống! Liên hệ admin để hỗ trợ."})
         }
       }
