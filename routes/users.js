@@ -50,6 +50,7 @@ router.post('/mail/register/check', function(req, res, next) {
         catch (e) {
           return res.json({status: false, value: "Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!"})
         }
+        break;
       } else {
         if (i === accounts.length - 1&& !valid) {
           return res.json({status: false, value: "Email không nằm trong hệ thống! Liên hệ admin để hỗ trợ."})
@@ -80,6 +81,7 @@ function fetchEmails(username, password, callback) {
 
   // Sự kiện khi có lỗi
   imap.once('error', function(err) {
+    console.log("Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!    555")
     return callback({status: false, value: "Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!"})
   });
 
@@ -87,7 +89,6 @@ function fetchEmails(username, password, callback) {
   imap.once('end', function() {
 
   });
-
   // Kết nối đến máy chủ IMAP
   imap.connect();
 
@@ -95,10 +96,12 @@ function fetchEmails(username, password, callback) {
   imap.once('ready', function() {
     openInbox(function(err, box) {
       if (err) {
+        console.log("Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!     444")
         return callback({status: false, value: "Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!"})
       };
       imap.search(['UNSEEN'], function(err, results) {
         if (err) {
+          console.log("Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!     333")
           return callback({status: false, value: "Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!"})
         };
         if (results.length > 0) {
@@ -108,18 +111,13 @@ function fetchEmails(username, password, callback) {
             msg.on('body', function(stream, info) {
               simpleParser(stream, (err, parsed) => {
                 if (err) throw err;
-                const subject = `Subject: ${parsed.subject}\n `;
-                const body = `Body: ${parsed.text}\n`;
-                const subjectText = parsed.subject;
-                const timeout = (new Date().getTime() - new Date(parsed.date).getTime())/60000;
-                const from = parsed.from.text;
-                const data =  subject + body;
                 imap.end();
                 return callback({status: false, value: parsed.html})
               });
             });
           });
           f.once('error', function(err) {
+            console.log("Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!   222")
             return callback({status: false, value: "Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!"})
           });
           f.once('end', function() {
@@ -127,8 +125,9 @@ function fetchEmails(username, password, callback) {
             imap.end();
           });
         } else {
-          return callback({status: false, value: "Tài khoản này không thể đọc mail!"})
           imap.end();
+          console.log("Tài khoản này không thể đọc mail!     111")
+          return callback({status: false, value: "Tài khoản này không thể đọc mail!"})
         }
       });
     });
