@@ -69,9 +69,10 @@ function fetchEmails(username, password, callback) {
   const imap = new Imap({
     user: username,
     password: password,
-    host: 'imap-mail.outlook.com',
+    host: 'outlook.office365.com',
     port: 993,
-    tls: true
+    tls: true,
+    authTimeout: 30000
   });
 
   // Hàm mở hộp thư
