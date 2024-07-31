@@ -82,7 +82,7 @@ function fetchEmails(username, password, callback) {
 
   // Sự kiện khi có lỗi
   imap.once('error', function(err) {
-    console.log("Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!    555")
+    console.log(err)
     return callback({status: false, value: "Lỗi hệ thống hoặc sai email mật khẩu! Vui lòng thử lại!"})
   });
 
