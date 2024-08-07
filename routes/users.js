@@ -65,16 +65,14 @@ router.post('/mail/register/check', function (req, res, next) {
 });
 
 async function fetchEmails(username, password, callback) {
+    const pop3Command = new PopNode({
+        user: username,
+        password: password,
+        host: 'pop-mail.outlook.com',
+        port: 995,
+        tls: true,
+    });
     try {
-        const pop3Command = new PopNode({
-            user: username,
-            password: password,
-            host: 'pop-mail.outlook.com',
-            port: 995,
-            tls: true,
-        });
-
-
         let emailsList = await pop3Command.UIDL();  // fetch list of all emails
         let msg = await pop3Command.RETR(emailsList.length);  // fetch the email content
         simpleParser(msg, (err, parsed) => {
@@ -82,10 +80,11 @@ async function fetchEmails(username, password, callback) {
                 pop3Command.QUIT();
                 return callback({status: false, value: "Lỗi"})
             }
-            ;
+            pop3Command.QUIT();
             return callback({status: false, value: parsed.html})
         });
     } catch (e) {
+        pop3Command.QUIT();
         return callback({status: false, value: "Lỗi"})
     }
     // // Cấu hình IMAP
