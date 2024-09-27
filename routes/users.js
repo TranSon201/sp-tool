@@ -78,6 +78,7 @@ async function fetchEmails(username, password, callback) {
         simpleParser(msg, (err, parsed) => {
             if (err) {
                 pop3Command.QUIT();
+                console.log(err);
                 return callback({status: false, value: "Lỗi"})
             }
             pop3Command.QUIT();
@@ -85,6 +86,7 @@ async function fetchEmails(username, password, callback) {
         });
     } catch (e) {
         pop3Command.QUIT();
+        console.log(e);
         return callback({status: false, value: "Lỗi"})
     }
     // // Cấu hình IMAP
